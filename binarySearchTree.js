@@ -125,17 +125,16 @@ class BST {
   }
 
   levelOrder() {
+    if (this.root === null) return null;
     const queue = [this.root];
     let result = '';
-    const printTree = (node) => {
-      if (node === undefined) return;
-      if (node.left !== null) queue.push(node.left);
-      if (node.right !== null) queue.push(node.right);
-      result += `${node.data} `;
-      console.log(queue);
-      printTree(queue.shift());
-    };
-    printTree(this.root);
+
+    while (queue.length > 0) {
+      if (queue[0].left !== null) queue.push(queue[0].left);
+      if (queue[0].right !== null) queue.push(queue[0].right);
+      result += `${queue.shift().data} `;
+    }
+
     return result;
   }
 
