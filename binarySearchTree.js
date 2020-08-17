@@ -92,9 +92,7 @@ class BST {
 
   preOrder() {
     const printTree = (node) => {
-      if (node === null) {
-        return '';
-      }
+      if (node === null) return '';
 
       return `${node.data + ' '}${printTree(node.left)}${printTree(
         node.right
@@ -106,9 +104,7 @@ class BST {
 
   postOrder() {
     const printTree = (node) => {
-      if (node === null) {
-        return '';
-      }
+      if (node === null) return '';
 
       return `${printTree(node.left)}${printTree(node.right)}${
         node.data + ' '
@@ -118,14 +114,62 @@ class BST {
     return printTree(this.root);
   }
 
-  bfs() {}
+  inOrder() {
+    const printTree = (node) => {
+      if (node === null) return '';
+      return `${printTree(node.left)}${node.data + ' '}${printTree(
+        node.right
+      )}`;
+    };
+    return printTree(this.root);
+  }
+
+  levelOrder() {
+    const queue = [this.root];
+    let result = '';
+    const printTree = (node) => {
+      if (node === undefined) return;
+      if (node.left !== null) queue.push(node.left);
+      if (node.right !== null) queue.push(node.right);
+      result += `${node.data} `;
+      console.log(queue);
+      printTree(queue.shift());
+    };
+    printTree(this.root);
+    return result;
+  }
+
+  minHeight(node = this.root) {
+    if (node === null) return -1;
+
+    let left = this.minHeight(node.left);
+    let right = this.minHeight(node.right);
+
+    if (left < right) return left + 1;
+    else return right + 1;
+  }
+
+  maxHeight(node = this.root) {
+    if (node === null) return -1;
+
+    let left = this.maxHeight(node.left);
+    let right = this.maxHeight(node.right);
+
+    if (left < right) return right + 1;
+    else return left + 1;
+  }
+
+  isBalanced() {
+    return this.maxHeight() <= this.minHeight() + 1;
+  }
 }
 
-const testArr = [9, 67, 52, 72, 14, 23, 76, 12];
+const testArr = [9, 67, 52, 72, 14, 23, 76, 12, 5, 3, 1, 4];
 const myTree = new BST();
 
 testArr.forEach((e) => myTree.add(e));
 
-console.log(myTree.preOrder());
-myTree.remove(67);
-console.log(myTree.preOrder());
+console.log('Pre Order ' + myTree.preOrder());
+console.log('Post Order ' + myTree.preOrder());
+console.log('In Order ' + myTree.inOrder());
+console.log('Level Order ' + myTree.levelOrder());
