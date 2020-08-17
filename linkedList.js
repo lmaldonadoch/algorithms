@@ -21,7 +21,7 @@ class LinkedList {
       this.length = 1;
     } else {
       node.next = this.head;
-      this.head = node.next;
+      this.head = node;
       this.length += 1;
     }
   }
@@ -40,6 +40,21 @@ class LinkedList {
     }
   }
 
+  reverse() {
+    let prev = null;
+    let next;
+    let node = this.head;
+    this.head = this.tail;
+    this.tail = node;
+
+    while (node !== null) {
+      next = node.next;
+      node.next = prev;
+      prev = node;
+      node = next;
+    }
+  }
+
   printList() {
     const result = [this.head.data];
     let current = this.head;
@@ -54,9 +69,10 @@ class LinkedList {
 }
 
 const myList = new LinkedList();
-myList.append(1);
-myList.append(2);
-myList.append(3);
-myList.append(4);
+myList.prepend(1);
+myList.prepend(2);
+myList.prepend(3);
+myList.prepend(4);
+myList.reverse();
 
 console.log(myList.printList());
