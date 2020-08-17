@@ -37,7 +37,7 @@ class BST {
       currentNode = currentNode.right;
     }
     if (currentNode === null) return null;
-    return currentNode.data;
+    return currentNode;
   }
 
   findMin() {
@@ -47,7 +47,7 @@ class BST {
       currentNode = currentNode.left;
     }
     if (currentNode === null) return null;
-    return currentNode.data;
+    return currentNode;
   }
 
   find(data) {
@@ -61,8 +61,64 @@ class BST {
       }
     }
     if (currentNode === null) return null;
-    return currentNode.data;
+    return currentNode;
   }
+
+  remove(data) {
+    const removeNode = (node, data) => {
+      if (node === null) return null;
+      if (data === node.data) {
+        if (node.right === null && node.left === null) return null;
+        if (node.right === null) return node.left;
+        if (node.left === null) return node.right;
+
+        let tempNode = node.right;
+        while (tempNode.left !== null) {
+          tempNode = tempNode.left;
+        }
+        node.data = tempNode.data;
+        node.right = removeNode(node.right, tempNode.data);
+        return node;
+      } else if (data < node.data) {
+        node.left = removeNode(node.left, data);
+        return node;
+      } else {
+        node.right = removeNode(node.right, data);
+        return node;
+      }
+    };
+    this.root = removeNode(this.root, data);
+  }
+
+  preOrder() {
+    const printTree = (node) => {
+      if (node === null) {
+        return '';
+      }
+
+      return `${node.data + ' '}${printTree(node.left)}${printTree(
+        node.right
+      )}`;
+    };
+
+    return printTree(this.root);
+  }
+
+  postOrder() {
+    const printTree = (node) => {
+      if (node === null) {
+        return '';
+      }
+
+      return `${printTree(node.left)}${printTree(node.right)}${
+        node.data + ' '
+      }`;
+    };
+
+    return printTree(this.root);
+  }
+
+  bfs() {}
 }
 
 const testArr = [9, 67, 52, 72, 14, 23, 76, 12];
@@ -70,6 +126,6 @@ const myTree = new BST();
 
 testArr.forEach((e) => myTree.add(e));
 
-console.log(myTree.findMax());
-console.log(myTree.findMin());
-console.log(myTree.find(23));
+console.log(myTree.preOrder());
+myTree.remove(67);
+console.log(myTree.preOrder());
